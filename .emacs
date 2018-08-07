@@ -1,3 +1,10 @@
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -59,5 +66,18 @@
 (global-set-key (kbd "<f2>") 'open-my-init-file)
 ;;设置快捷键 f2 打开配置文件
 
-;;(global-company-mode t)
-;;提示模式
+;;关闭自动保存文件
+(setq make-backup-files nil)
+;;将备份文件全部放到一个目录中去
+(setq backup-directory-alist (quote (("." . "~/.backups"))))
+
+;; 加载其他插件库的地址
+(require 'package)
+(add-to-list 'package-archives 
+            '("melpa" . "http://melpa.org/packages/"))
+(package-initialize)
+
+
+;;加载主题
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'badwolf t)
