@@ -10,7 +10,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(package-selected-packages (quote (org2blog))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -102,7 +102,7 @@
 (setq org-src-fontify-natively t)
 (add-hook 'org-mode-hook '(lambda ()
                             ;; turn on flyspell-mode by default
-                            (flyspell-mode 1)
+                            ;;(flyspell-mode 1)
                             ;; C-TAB for expanding
                             (local-set-key (kbd "C-<tab>")
                                            'yas/expand-from-trigger-key)
