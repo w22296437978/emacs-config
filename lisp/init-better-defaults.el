@@ -35,5 +35,21 @@
 (define-abbrev-table 'global-abbrev-table '(
 					    ("try" "try{\n\n}catch(error){\n\n}")
 					    ))
+
+;; 递归拷贝/删除目录禁止询问
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+
+;;重用目录buffer
+(put 'dired-find-alternate-file 'disabled nil)
+;;(require 'dired)
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
+
+;; 支持使用 <c-x c-j> 打开当前文件所在目录的dired
+(require 'dired-x)
+;; 跨目录复制
+(setq dired-dwim-target t)
+
 (provide 'init-better-defaults)
 

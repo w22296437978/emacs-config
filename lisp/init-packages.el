@@ -17,7 +17,7 @@
 		company
 		;; --- Better Editor ---
 		hungry-delete
-		;;smex
+		 ;;smex
 		swiper
 		counsel
 		smartparens
@@ -30,6 +30,7 @@
 		monokai-theme
 		popwin
 		;; solarized-theme
+		;;reveal-in-osx-finder ;; 使用命令打开文件系统,貌似自能在mac上用
 		) "Default packages")
 
  (setq package-selected-packages my/packages)
