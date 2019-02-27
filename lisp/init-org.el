@@ -33,7 +33,14 @@
 
 
 ;; 该文件夹下的内容允许使用议程模式
-(setq org-agenda-files '("~/org"))
+(setq org-agenda-files '("~/.emacs.d"))
 (global-set-key (kbd "C-c a") 'org-agenda)
 
+
+;;快速记录一个日程
+(setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/.emacs.d/interim.org" "工作安排")
+	 "* TODO [#B] %?\n  %i\n"
+	 :empty-lines 1)))
+(global-set-key (kbd "C-c r") 'org-capture)
 (provide 'init-org)

@@ -86,4 +86,33 @@
 	(message "格式缓冲区代码")))))
 (global-set-key (kbd "C-M-\\") 'indent-region-or-buffer)
 
+;; 缩进切换
+(defun my-toggle-web-indent ()
+  (interactive)
+  ;; web development
+  (if (or (eq major-mode 'js-mode) (eq major-mode 'js2-mode))
+      (progn
+	(setq js-indent-level (if (= js-indent-level 2) 4 2))
+	(setq js2-basic-offset (if (= js2-basic-offset 2) 4 2))))
+
+  (if (eq major-mode 'web-mode)
+      (progn (setq web-mode-markup-indent-offset (if (= web-mode-markup-indent-offset 2) 4 2))
+	     (setq web-mode-css-indent-offset (if (= web-mode-css-indent-offset 2) 4 2))
+	     (setq web-mode-code-indent-offset (if (= web-mode-code-indent-offset 2) 4 2))))
+  (if (eq major-mode 'css-mode)
+      (setq css-indent-offset (if (= css-indent-offset 2) 4 2)))
+
+  (setq indent-tabs-mode nil))
+
+(global-set-key (kbd "C-c t i") 'my-toggle-web-indent)
+
+(global-set-key (kbd "M-s o") 'occur-dwim)
+(global-set-key (kbd "M-s i") 'counsel-imenu)
+
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+(global-set-key (kbd "M-s e") 'iedit-mode)
+
+;; js重构
+(js2r-add-keybindings-with-prefix "C-c C-m")
 (provide 'init-keybindings)

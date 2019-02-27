@@ -1,3 +1,5 @@
+;; 修改utf-8默认保存格式
+(set-language-environment  "UTF-8")
 
 ;;文件记录
 (require 'recentf)
@@ -13,8 +15,14 @@
 
 ;; 全选输入后面增加改为替换选中内容
 (delete-selection-mode t)
-; 括号匹配
+;; 括号匹配
 (add-hook 'emacs-lisp-mode-hook 'show-paren-mode) ;; 添加一个钩子到emacs-lisp...
+;; 扩展括号匹配 光标在内部高亮外部括号
+(define-advice show-paren-function (:around (fun) fix-show-parent-function)
+  (cond ((looking-at-p "\\s(") (funcall fun))
+	(t (save-excursion
+	     (ignore-errors (backward-up-list))
+	     (funcall fun)))))
 
 ;; 自动加载外部修改过来的文件
 (global-auto-revert-mode 1)
@@ -50,6 +58,53 @@
 (require 'dired-x)
 ;; 跨目录复制
 (setq dired-dwim-target t)
+
+;; 删除dos换行符
+(defun remove-dos-eol ()
+  (interactive)
+  (goto-char (point-min))
+  (while (search-forward "\r" nil t) (replace-match "")))
+;;隐藏dos换行符
+(defun hidden-dos-eol ()
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
+
+;; 优化occur
+(defun occur-dwim ()
+  "Call `occur' with a sane default."
+  (interactive)
+  (push (if (region-active-p)
+	    (buffer-substring-no-properties
+	     (region-beginning)
+	     (region-end))
+	  (let ((sym (thing-at-point 'symbol)))
+	    (when (stringp sym)
+	      (regexp-quote sym))))
+	regexp-history)
+  (call-interactively 'occur))
+
+
+;; 优化imenu 当前函数的列表
+(defun js2-imenu-make-index ()
+      (interactive)
+      (save-excursion
+	;; (setq imenu-generic-expression '((nil "describe\\(\"\\(.+\\)\"" 1)))
+	(imenu--generic-function '(("describe" "\\s-*describe\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+				   ("it" "\\s-*it\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+				   ("test" "\\s-*test\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+				   ("before" "\\s-*before\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+				   ("after" "\\s-*after\\s-*(\\s-*[\"']\\(.+\\)[\"']\\s-*,.*" 1)
+				   ("Function" "function[ \t]+\\([a-zA-Z0-9_$.]+\\)[ \t]*(" 1)
+				   ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*=[ \t]*function[ \t]*(" 1)
+				   ("Function" "^var[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*=[ \t]*function[ \t]*(" 1)
+				   ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*()[ \t]*{" 1)
+				   ("Function" "^[ \t]*\\([a-zA-Z0-9_$.]+\\)[ \t]*:[ \t]*function[ \t]*(" 1)
+				   ("Task" "[. \t]task([ \t]*['\"]\\([^'\"]+\\)" 1)))))
+(add-hook 'js2-mode-hook
+	      (lambda ()
+		(setq imenu-create-index-function 'js2-imenu-make-index)))
+
 
 (provide 'init-better-defaults)
 
