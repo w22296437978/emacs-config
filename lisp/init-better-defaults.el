@@ -1,3 +1,6 @@
+;; table 修改为空格
+(setq-default indent-tabs-mode nil)
+
 ;; 修改utf-8默认保存格式
 (set-language-environment  "UTF-8")
 
@@ -42,7 +45,8 @@
 (abbrev-mode t)
 (define-abbrev-table 'global-abbrev-table '(
 					    ("try" "try{\n\n}catch(error){\n\n}")
-					    ))
+					    ("for" "for( var i = 0; i < arr.length; i++){\n\tvar item = arr[i];\n}")))
+
 
 ;; 递归拷贝/删除目录禁止询问
 (setq dired-recursive-copies 'always)

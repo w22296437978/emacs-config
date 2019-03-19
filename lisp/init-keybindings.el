@@ -115,4 +115,9 @@
 
 ;; js重构
 (js2r-add-keybindings-with-prefix "C-c C-m")
+
+;; 全局搜素
+(global-set-key (kbd "C-c p s") 'helm-ag-project-root)
+
+
 (provide 'init-keybindings)

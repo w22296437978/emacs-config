@@ -42,6 +42,22 @@
 
 		      ;; org
 		      org-pomodoro
+
+                      ;; 多文件搜索 需要安装helm-ag
+                      helm-ag
+
+                      ;;语法检查 eslint
+                      flycheck
+
+                      ;;
+                      auto-yasnippet
+
+                      ;;evil
+                      evil
+                      ;; 窗口选择器
+                      window-numbering
+                      ;; 操作日志
+                      ;;mwe-log-commands 
 		      ) "Default packages")
 
 (setq package-selected-packages my/packages)
@@ -82,7 +98,16 @@
 ;;(add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
 (smartparens-global-mode t)
 ;; 取消'自动补全
-(sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+
+(defun disable-signle-quote()
+  (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+  (sp-local-pair 'emacs-lisp-mode "`" nil :actions nil))
+(add-hook 'emacs-lisp-mode-hook #'disable-signle-quote)
+
+
+
+
+
 
 
 ;; 设置js文件默认使用js2-model
@@ -103,6 +128,19 @@
 ;; config for js2-refactor
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
 
+;; config flycheck
+(add-hook 'js2-mode-hook 'flycheck-mode)
+;; (add-hook 'after-init-hook 'global-flycheck-mode)
 
+;;
+(require 'yasnippet)
+(yas-reload-all)
+(add-hook 'prog-mode-hook #'yas-minor-mode)
+
+;; 开启vim快捷键 
+;; (evil-mode 1)
+
+;; 使用 m-1 可以跳转窗口
+(window-numbering-mode 1)
 (require 'org-pomodoro)
 (provide 'init-packages)
